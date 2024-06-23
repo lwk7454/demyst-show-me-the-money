@@ -1,9 +1,10 @@
 import { getBalanceSheet } from '@/app/actions/xeroApi'
 import type { Xero } from '@/types/xero'
-import { FC, Fragment } from 'react'
-import Row = Xero.Row
+import { wait } from '@/utils/utils'
+import { Fragment } from 'react'
 
 export default async function Home() {
+  await wait(2) // TODO: artificial latency to show loading status in dev
   const balanceSheetResp = await getBalanceSheet()
 
   return (
@@ -17,7 +18,7 @@ export default async function Home() {
   )
 }
 
-const ReportTable: FC = ({ report }: { report: Xero.Report }) => {
+const ReportTable = ({ report }: { report: Xero.Report }) => {
   const rowIsSection = (row: Xero.RowBase): row is Xero.Section => {
     return row.RowType === 'Section'
   }
@@ -38,7 +39,7 @@ const ReportTable: FC = ({ report }: { report: Xero.Report }) => {
     <Fragment>
       {section.Title && (
         <tr className={''}>
-          <th colSpan="100%" className="pt-12 text-center">{section.Title}</th>
+          <th colSpan={100} className="pt-12 text-center">{section.Title}</th>
         </tr>
       )}
       {section.Rows.map((e, i) => renderRow(i, e))}
@@ -65,7 +66,7 @@ const ReportTable: FC = ({ report }: { report: Xero.Report }) => {
       <table className="mt-4 w-full text-left text-gray-400 bg-gray-800 border-solid border-collapse">
         <thead className="text-sm uppercase">
         <tr className={''}>
-          {(report.Rows[0] as Row).Cells.map(renderHeaderCell)}
+          {(report.Rows[0] as Xero.Row).Cells.map(renderHeaderCell)}
         </tr>
         </thead>
         <tbody>

@@ -1,7 +1,7 @@
 import { Xero } from '@/types/xero'
-import axios, { AxiosError } from 'axios'
+import axios, { AxiosError, AxiosRequestConfig } from 'axios'
 
-async function baseRequest<T>(args: axios.AxiosRequestConfig): Promise<T> {
+export async function baseRequest<T>(args: AxiosRequestConfig): Promise<T> {
   try {
     const res = await axios({
       baseURL: process.env.XERO_ROOT + '/api.xro/2.0',
@@ -11,7 +11,7 @@ async function baseRequest<T>(args: axios.AxiosRequestConfig): Promise<T> {
   } catch (e) {
     if(e instanceof AxiosError) {
       // TODO: error handling logic
-      throw e
+      return 'error' as T
     }
     throw e as Error
   }
@@ -19,6 +19,7 @@ async function baseRequest<T>(args: axios.AxiosRequestConfig): Promise<T> {
 
 export async function getBalanceSheet() {
   return await baseRequest<Xero.BalanceSheetResponse>({
-    url: '/Reports/BalanceSheet'
+    url: '/Reports/BalanceSheet',
+    method: 'GET'
   })
 }
