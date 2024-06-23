@@ -1,5 +1,9 @@
 # Demyst Show Me The Money
 
+## Screenshot
+<img src="public/screenshot-2024-06-23.png" alt="screenshot" style="max-width:500px;"/>
+
+
 ## Getting Started
 
 Have mock Xero Balance Sheet API docker image running at port 3000 https://hub.docker.com/r/jaypeng2015/show-me-the-money.
